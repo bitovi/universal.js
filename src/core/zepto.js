@@ -1,11 +1,12 @@
 define([ 'zepto',
 	'./shared/alias',
+	'./shared/curry',
 	'u/collection/forEach',
 	'u/lang/toArray',
 	'u/object/keys',
 	'u/object/values',
 	'./shared/withContext'
-], function ($, alias, each, toArray, keys, values, withContext) {
+], function ($, alias, curried, each, toArray, keys, values, withContext) {
 	return alias({
 		extend: $.extend,
 		isArray: $.isArray,
@@ -14,12 +15,7 @@ define([ 'zepto',
 		isFunction: $.isFunction,
 		toArray: toArray,
 		bind: function(fn, context) {
-			var args = toArray(arguments),
-				sliced = args.slice(2),
-				curried = sliced.length ? function() {
-					return fn.apply(this, sliced.concat(toArray(arguments)));
-				} : fn;
-			return $.proxy(curried, context);
+			return $.proxy(curried(fn, arguments, toArray), context);
 		},
 		keys: keys,
 		values: values,

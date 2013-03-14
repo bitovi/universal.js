@@ -1,10 +1,11 @@
 define([ 'dojo', './shared/alias',
 	'./shared/isEmpty',
+	'./shared/curry',
 	'u/object/forOwn',
 	'u/lang/isPlainObject',
 	'u/object/keys',
 	'u/object/values'
-], function (dojo, alias, isEmpty, forOwn, isPlainObject, keys, values) {
+], function (dojo, alias, isEmpty, curried, forOwn, isPlainObject, keys, values) {
 	var toArray = function (arr) {
 		var array = [];
 		dojo.forEach(arr, function (item) {
@@ -30,13 +31,7 @@ define([ 'dojo', './shared/alias',
 		},
 		toArray: toArray,
 		bind: function (fn, context) {
-			var args = toArray(arguments),
-				sliced = args.slice(2),
-				curried = sliced.length ? function () {
-					return fn.apply(this, sliced.concat(toArray(arguments)));
-				} : fn;
-
-			return dojo.hitch(context, curried);
+			return dojo.hitch(context, curried(fn, arguments, toArray));
 		},
 		keys: keys,
 		values: values,

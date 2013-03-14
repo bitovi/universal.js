@@ -1,8 +1,9 @@
 define([ 'mootools',
 	'./shared/alias',
 	'./shared/isEmpty',
+	'./shared/curry',
 	'u/lang/isPlainObject'
-], function (moo, alias, isEmpty, isPlainObject) {
+], function (moo, alias, isEmpty, curried, isPlainObject) {
 	var toArray = function (arr) {
 			var result = Array.from(arr);
 			// Array.from returns the same array if it was already
@@ -12,7 +13,7 @@ define([ 'mootools',
 			}
 			return result;
 		},
-		makeFunction = function (fn, fallback) {
+		makeFunction = function (fn) {
 			return function () {
 				var args = toArray(arguments),
 					obj = args.shift();
@@ -37,13 +38,7 @@ define([ 'mootools',
 		},
 		toArray: toArray,
 		bind: function (fn, context) {
-			var args = toArray(arguments),
-				sliced = args.slice(2),
-				curried = sliced.length ? function () {
-					return fn.apply(this, sliced.concat(toArray(arguments)));
-				} : fn;
-
-			return Function.prototype.bind.call(curried, context)
+			return Function.prototype.bind.call(curried(fn, arguments, toArray), context)
 		},
 		keys: Object.keys,
 		values: Object.values,
