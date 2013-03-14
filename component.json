@@ -4,6 +4,7 @@
 	"main": "./src/universal.js",
 	"dependencies": {
 		"mout": "~ 0.4.0",
-		"requirejs": "~ 2.1.0"
+		"requirejs": "~ 2.1.0",
+		"qunit": "1.11.0"
 	}
 }
