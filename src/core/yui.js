@@ -3,19 +3,27 @@ define([ 'yui', './shared/alias',
 	'u/function/bind',
 	'u/collection/map',
 	'u/collection/filter'
-], function(YUI, alias, isPlainObject, bind, map, filter) {
+], function (YUI, alias, isPlainObject, bind, map, filter) {
 
-	var Y = YUI().use('*');
+	var Y = YUI().use('*'),
+		each = function (obj) {
+			if (Y.Lang.isArray(obj)) {
+				return Y.Array.each.apply(this, arguments);
+			}
+			return Y.Object.each.apply(this, arguments);
+		};
 
 	return alias({
 		extend: function (first) {
 			var deep = first === true ? 1 : 0,
-				target = arguments[deep],
-				i = deep + 1,
-				arg;
-			for (; arg = arguments[i]; i++) {
-				Y.mix(target, arg, true, null, null, !!deep);
-			}
+				target = arguments[deep];
+
+			each(arguments, function(arg) {
+				if(arg && arg !== true) {
+					Y.mix(target, arg, true, null, null, !!deep);
+				}
+			});
+
 			return target;
 		},
 		isArray: Y.Lang.isArray,
@@ -31,12 +39,7 @@ define([ 'yui', './shared/alias',
 		bind: bind,
 		keys: Y.Object.keys,
 		values: Y.Object.values,
-		each: function(obj) {
-			if(Y.Lang.isArray(obj)) {
-				return Y.Array.each.apply(this, arguments);
-			}
-			return Y.Object.each.apply(this, arguments);
-		},
+		each: each,
 		map: map,
 		filter: filter
 	});
