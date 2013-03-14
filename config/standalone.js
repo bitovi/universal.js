@@ -1,4 +1,5 @@
 requirejs.config({
+	baseUrl: '../',
 	map: {
 		'*': {
 			'universal/core': 'src/core/standalone'

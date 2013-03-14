@@ -1,17 +1,24 @@
 define([ 'mootools',
-	'./alias',
-	'u/lang/isEmpty',
+	'./shared/alias',
+	'./shared/isEmpty',
 	'u/lang/isPlainObject'
 ], function (moo, alias, isEmpty, isPlainObject) {
-	// each (forEach), map, filter, every, some, reduce
-	// extend, isArray, isEmptyObject, isPlainObject, isFunction, makeArray (toArray), proxy (bind)
-	var makeFunction = function (fn, fallback) {
+	var toArray = function (arr) {
+			var result = Array.from(arr);
+			// Array.from returns the same array if it was already
+			// there. The expected behaviour is to get a cloned array
+			if (arr === result) {
+				return result.slice(0);
+			}
+			return result;
+		},
+		makeFunction = function (fn, fallback) {
 			return function () {
 				var args = toArray(arguments),
 					obj = args.shift();
 
-				if (obj === null || obj === undefined && fallback) {
-					return fallback();
+				if (obj === null || obj === undefined) {
+					return [];
 				}
 
 				return fn.apply(obj, args);
@@ -19,39 +26,34 @@ define([ 'mootools',
 		};
 
 	return alias({
-		// Core stuff
 		extend: Object.merge,
 		isArray: function (arr) {
 			return instanceOf(arr, Array);
 		},
-		isEmpty: function (arg) {
-			return arg === null || arg === undefined || isEmpty.apply(this, arguments);
-		},
+		isEmpty: isEmpty,
 		isPlainObject: isPlainObject,
 		isFunction: function (fn) {
 			return instanceOf(fn, Function);
 		},
-		toArray: function (arr) {
-			var result = Array.from(arr);
-			// If we get the same array, clone it
-			if (arr === result) {
-				return result.slice(0);
-			}
-			return result;
+		toArray: toArray,
+		bind: function (fn, context) {
+			var args = toArray(arguments),
+				sliced = args.slice(2),
+				curried = sliced.length ? function () {
+					return fn.apply(this, sliced.concat(toArray(arguments)));
+				} : fn;
+
+			return Function.prototype.bind.call(curried, context)
 		},
-		bind: makeFunction(Function.prototype.bind),
 		keys: Object.keys,
 		values: Object.values,
-		// Collection functions (ES5 Arrays)
 		each: function (collection) {
 			if (instanceOf(collection, Array)) {
 				return Array.each.apply(this, arguments);
 			}
 			return Object.each.apply(this, arguments);
 		},
-		map: makeFunction(Array.prototype.map, function () {
-			return [];
-		}),
+		map: makeFunction(Array.prototype.map),
 		filter: makeFunction(Array.prototype.filter)
 	});
 });

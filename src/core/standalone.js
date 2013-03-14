@@ -1,7 +1,7 @@
-define([ './alias',
+define([ './shared/alias',
 	'u/object/mixin',
 	'u/lang/isArray',
-	'u/lang/isEmpty',
+	'./shared/isEmpty',
 	'u/lang/isPlainObject',
 	'u/lang/isFunction',
 	'u/lang/toArray',
@@ -13,22 +13,17 @@ define([ './alias',
 	'u/collection/filter'
 ], function(alias, extend, isArray, isEmpty, isPlainObject,
             isFunction, toArray, bind, keys, values, each, map, filter) {
-	// each (forEach), map, filter, every, some, reduce
-	// extend, isArray, isEmptyObject, isPlainObject, isFunction, makeArray (toArray), proxy (bind)
+
 	return alias({
-		// Core stuff
 		extend: extend,
 		isArray: isArray,
-		isEmpty: function(arg) {
-			return arg === null || arg === undefined || isEmpty.apply(this, arguments);
-		},
+		isEmpty: isEmpty,
 		isPlainObject: isPlainObject,
 		isFunction: isFunction,
 		toArray: toArray,
 		bind: bind,
 		keys: keys,
 		values: values,
-		// Collection functions (ES5 Arrays)
 		each: each,
 		map: map,
 		filter: filter
