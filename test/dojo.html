@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Universal.js Dojo tests</title>
+    <link rel="stylesheet" href="../components/qunit/qunit.css">
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="../components/qunit/qunit.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+    <script type="text/javascript">
+        require({
+            baseUrl: '/../',
+            paths: {
+                u: '../components/mout/src'
+            },
+            aliases:[
+                [ 'universal/core', 'src/core/dojo' ]
+            ]
+        });
+    </script>
+    <script src="unit/index.js"></script>
+</body>
+</html>
