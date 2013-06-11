@@ -220,4 +220,26 @@ define([ 'universal/core' ], function(u) {
 		evens = u.filter([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
 		equal(evens.join(', '), '2, 4, 6', 'aliased as "filter"');
 	});
+
+	test('reduce', function() {
+	  equal(undefined, u.reduce(null));
+	  var array = [1,2,3,4], add = function(a, b) { return a+b; };
+	  equal(10, u.reduce(array, add));
+	  equal(25, u.reduce(array, add, 15));
+
+	  array = ["a","b","c","d"];
+	  array.reduce = null; //override native reduce
+	  equal("abcd", u.reduce(array, add));
+	  equal("zabcd", u.reduce(array, add, "z"));
+	});
+
+	test("reduce over Object", function() {
+
+	  var obj = { a : "x", b : "y", c : "z"}
+	  equal("xyz", u.reduce(obj, function(a, b) { return a + b }, ""));
+	  equal("xyz", u.reduce(obj, function(a, b) { return a + b }));
+
+	  equal("abc", u.reduce(obj, function(a, b, i) { return a + i}, ""));
+	});
+
 });

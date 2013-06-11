@@ -12,10 +12,11 @@ define([ './shared/alias',
 	'u/object/keys',
 	'u/object/values',
 	'u/collection/forEach',
+	'u/collection/reduce',
 	'u/collection/map',
 	'u/collection/filter'
 ], function(alias, extend, isArray, isEmpty, isPlainObject,
-            isFunction, toArray, bind, keys, values, each, map, filter) {
+            isFunction, toArray, bind, keys, values, each, reduce, map, filter) {
 
 	return alias({
 		/**
@@ -89,6 +90,12 @@ define([ './shared/alias',
 		 *
 		 * filter(collection, iterator, context)
 		 */
-		filter: filter
+		filter: filter,
+		/**
+		 * @function u.reduce
+		 * 
+		 * reduce(collection, iterator, initial)
+ 		 */
+ 		reduce: reduce
 	});
 });
