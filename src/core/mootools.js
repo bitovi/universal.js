@@ -2,8 +2,9 @@ define([ 'mootools',
 	'./shared/alias',
 	'./shared/isEmpty',
 	'./shared/curry',
+	'u/collection/reduce',
 	'u/lang/isPlainObject'
-], function (moo, alias, isEmpty, curried, isPlainObject) {
+], function (moo, alias, isEmpty, curried, reduce, isPlainObject) {
 	var toArray = function (arr) {
 			var result = Array.from(arr);
 			// Array.from returns the same array if it was already
@@ -40,6 +41,7 @@ define([ 'mootools',
 		bind: function (fn, context) {
 			return Function.prototype.bind.call(curried(fn, arguments, toArray), context)
 		},
+		reduce: reduce,
 		keys: Object.keys,
 		values: Object.values,
 		each: function (collection) {

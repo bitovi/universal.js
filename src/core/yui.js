@@ -1,9 +1,10 @@
 define([ 'yui', './shared/alias',
 	'u/lang/isPlainObject',
 	'u/function/bind',
+	'u/collection/reduce',
 	'u/collection/map',
 	'u/collection/filter'
-], function (YUI, alias, isPlainObject, bind, map, filter) {
+], function (YUI, alias, isPlainObject, bind, reduce, map, filter) {
 
 	var Y = YUI().use('*'),
 		each = function (obj) {
@@ -37,6 +38,7 @@ define([ 'yui', './shared/alias',
 			return Y.Array(arr);
 		},
 		bind: bind,
+		reduce: reduce,
 		keys: Y.Object.keys,
 		values: Y.Object.values,
 		each: each,
